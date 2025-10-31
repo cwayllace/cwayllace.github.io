@@ -1,0 +1,214 @@
+body {
+    font-family: 'Libre Baskerville', serif;
+    background-color: #f0f0e0;
+    color: #4a4a4a;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1, h2, h3 {
+    font-family: 'IM Fell English SC', serif;
+    color: #3b3b3b;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.start-button {
+    background-color: #8B4513; /* SaddleBrown */
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    font-family: 'IM Fell English SC', serif;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.start-button:hover {
+    background-color: #6a340f;
+    transform: translateY(-2px);
+}
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    max-width: 1200px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.graph-container {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+}
+
+#graph-svg {
+    width: 400px;
+    height: 400px;
+    background-color: #fcfce9;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+.node {
+    fill: #e8c792;
+    stroke: #8b4513;
+    stroke-width: 2px;
+    transition: fill 0.3s ease, stroke-width 0.3s ease;
+}
+
+.node-label {
+    fill: #3b3b3b;
+    font-size: 14px;
+    user-select: none;
+    pointer-events: none;
+}
+
+.edge {
+    stroke: #8b4513;
+    stroke-width: 2px;
+    opacity: 0.5;
+    transition: stroke-width 0.3s ease, opacity 0.3s ease;
+}
+
+.path-taken {
+    stroke: #21a329; /* Jungle Green */
+    stroke-width: 4px;
+    opacity: 1;
+}
+
+.in-fringe {
+    fill: #92b8e8;
+    stroke-width: 3px;
+}
+
+.visited {
+    fill: #e0e0e0;
+    stroke: #666;
+}
+
+.current {
+    fill: #e89292;
+    stroke: #8B4513;
+    stroke-width: 4px;
+}
+
+.control-panel {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    width: 350px;
+}
+
+.algorithm-selection {
+    margin-bottom: 20px;
+}
+
+.buttons button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    font-size: 1em;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    transition: background-color 0.2s ease;
+}
+
+.buttons button:hover:enabled {
+    background-color: #e0e0e0;
+}
+
+.buttons button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+.status-panel, .explanation-box {
+    margin-top: 20px;
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+}
+
+.status-item {
+    margin-bottom: 15px;
+}
+
+.status-item .label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+#visited-list, #fringe-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+#visited-list li, #fringe-list li {
+    background-color: #e8c792;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    border: 1px solid #8B4513;
+}
+
+#visited-list li {
+    background-color: #a3a3a3;
+    color: #fff;
+}
+
+#fringe-list li {
+    background-color: #92b8e8;
+}
+
+.intro-text, .explanation-box p {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+    font-style: italic;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #e8c792;
+    color: #3b3b3b;
+}
+
+td:first-child {
+    font-weight: bold;
+}
+
+.controls {
+    text-align: center;
+    margin-top: 20px;
+}

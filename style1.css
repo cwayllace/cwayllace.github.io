@@ -1,0 +1,254 @@
+/* --- General Body and Fonts for an Old Map Feel --- */
+body {
+    /* Muted, earthy tones instead of modern grays */
+    font-family: 'Libre Baskerville', serif;
+    background-color: #f7f1e3; /* Light parchment/old paper color */
+    color: #4b382a; /* Dark brown for text */
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1, h2, h3 {
+    font-family: 'IM Fell English SC', serif;
+    color: #2c1a0c; /* Very dark brown, almost black */
+    text-align: center;
+    /* Removed modern text-shadow for a more rustic feel */
+    border-bottom: 2px solid #a89a8f; /* A subtle, aged line under headings */
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+/* --- Buttons --- */
+.start-button, .buttons button {
+    font-family: 'IM Fell English SC', serif;
+    background-color: #d8c29b; /* Muted, old gold color */
+    color: #4b382a;
+    border: 2px solid #8c7853; /* Darker, more rustic border for depth */
+    padding: 10px 20px;
+    font-size: 1.2em;
+    cursor: pointer;
+    border-radius: 0; /* Remove modern rounded corners */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    transition: all 0.2s ease-in-out;
+    margin: 5px;
+}
+
+.start-button:hover, .buttons button:hover:enabled {
+    background-color: #f4e1c9; /* Lighter on hover */
+    transform: none; /* Remove the vertical hover effect for a classic feel */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+}
+
+.buttons button:disabled {
+    background-color: #c2b6a5; /* Aged gray for disabled state */
+    cursor: not-allowed;
+    border-color: #a89a8f;
+}
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    max-width: 1200px;
+    width: 100%;
+    margin-top: 20px;
+    /* Added aged border and box shadow */
+    background-color: #fffaf0;
+    border: 8px solid #a89a8f;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+}
+
+/* --- Graph & SVG Elements for an Old Map Look --- */
+.graph-container {
+    /* Used subtle inner shadow for a recessed feel */
+    border: 1px solid #c2b6a5;
+    background-color: #fcf6e7;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 0;
+}
+
+#graph-svg {
+    width: 400px;
+    height: 400px;
+    background-color: #fcf6e7; /* Match the graph container background */
+    border-radius: 0; /* Remove rounded corners */
+    border: none; /* Let the container handle the border */
+}
+
+.node {
+    fill: #d8c29b; /* Muted gold/beige for cities */
+    stroke: #4b382a; /* Dark brown border */
+    stroke-width: 2px;
+    transition: fill 0.3s ease, stroke-width 0.3s ease;
+}
+
+.node-label {
+    fill: #4b382a; /* Dark brown for text */
+    font-family: 'IM Fell English SC', serif;
+    font-size: 14px;
+    user-select: none;
+    pointer-events: none;
+}
+
+.edge {
+    /* Changed to a rustic, solid color with a bit more width */
+    stroke: #8c7853; /* Rustic brown color */
+    stroke-width: 3px;
+    opacity: 0.8;
+    transition: stroke-width 0.3s ease, opacity 0.3s ease;
+}
+
+.path-taken {
+    /* A bold, dark red for the active path */
+    stroke: #800000;
+    stroke-width: 4px;
+    opacity: 1;
+}
+
+.in-fringe {
+    fill: #b3d7a8; /* Muted green for the fringe, like a fresh marking */
+    stroke: #2b5c1c;
+    stroke-width: 3px;
+}
+
+.visited {
+    /* Used the term 'expanded' for consistency with JS */
+    fill: #c2b6a5; /* Aged gray for expanded nodes */
+    stroke: #5c5c5c;
+}
+
+.current {
+    fill: #e8a97c; /* Warm orange for the current node, like a marker */
+    stroke: #9d5d30;
+    stroke-width: 4px;
+}
+
+/* --- Other UI elements --- */
+.control-panel {
+    background-color: #fcf6e7;
+    border: 2px solid #c2b6a5;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    padding: 15px;
+    width: 350px;
+    border-radius: 0;
+}
+
+.status-panel, .explanation-box {
+    margin-top: 20px;
+    border-top: 2px solid #c2b6a5; /* Consistent aged line */
+    padding-top: 20px;
+}
+
+.status-item {
+    margin-bottom: 15px;
+}
+
+.status-item .label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #4b382a;
+}
+
+#expanded-list, #fringe-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+#expanded-list li, #fringe-list li {
+    background-color: #d8c29b; /* Muted gold for the background of list items */
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 0.9em;
+    border: 1px solid #8c7853;
+}
+
+#expanded-list li {
+    background-color: #c2b6a5; /* Aged gray for expanded list items */
+    color: #4b382a;
+    border-color: #5c5c5c;
+}
+
+.intro-text, .explanation-box p {
+    background-color: #fcf6e7;
+    padding: 15px;
+    border-radius: 0;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+    font-style: italic;
+    border: 1px solid #c2b6a5;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 20px auto;
+    background-color: #fcf6e7;
+    border-radius: 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border: 2px solid #c2b6a5;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #d3c7b8;
+}
+
+th {
+    background-color: #d8c29b;
+    color: #3b3b3b;
+}
+
+td:first-child {
+    font-weight: bold;
+}
+
+.controls {
+    text-align: center;
+    margin-top: 20px;
+}
+/* Container for Challenge 1 to place text and image side-by-side */
+.challenge-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    margin: 20px 0;
+    flex-wrap: wrap; /* Allows the content to wrap on smaller screens */
+}
+
+/* Specific styling for the text and image containers */
+.challenge-text {
+    flex: 1;
+    min-width: 300px;
+}
+
+.challenge-image {
+    flex: 1;
+    text-align: center; /* Centers the image within its container */
+}
+
+.challenge-image img {
+    max-width: 100%;
+    height: auto;
+    border: 5px solid #a89a8f; /* Adds a rustic border to the image */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Optional: Adjustments for mobile view */
+@media (max-width: 768px) {
+    .challenge-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}

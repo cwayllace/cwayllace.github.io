@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Build the Lost Map</title>
+        <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Libre+Baskerville&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style1.css">
+    </head>
+    <body>
+        <h1>Reconstruct the Lost Map</h1>
+        <p>Use the matrix below to define the paths between the five forgotten Maya cities. An 'X' means there's a path between two cities. Remember, if there's a path from City A to City B, there's also a path back from City B to City A.</p>
+        <form id="graph-form">
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Tikal</th>
+                        <th>Palenque</th>
+                        <th>Chichen Itza</th>
+                        <th>Copan</th>
+                        <th>Uxmal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Tikal</th>
+                        <td>-</td>
+                        <td><input type="checkbox" id="cell-0-1"></td>
+                        <td><input type="checkbox" id="cell-0-2"></td>
+                        <td><input type="checkbox" id="cell-0-3"></td>
+                        <td><input type="checkbox" id="cell-0-4"></td>
+                    </tr>
+                    <tr>
+                        <th>Palenque</th>
+                        <td><input type="checkbox" id="cell-1-0"></td>
+                        <td>-</td>
+                        <td><input type="checkbox" id="cell-1-2"></td>
+                        <td><input type="checkbox" id="cell-1-3"></td>
+                        <td><input type="checkbox" id="cell-1-4"></td>
+                    </tr>
+                    <tr>
+                        <th>Chichen Itza</th>
+                        <td><input type="checkbox" id="cell-2-0"></td>
+                        <td><input type="checkbox" id="cell-2-1"></td>
+                        <td>-</td>
+                        <td><input type="checkbox" id="cell-2-3"></td>
+                        <td><input type="checkbox" id="cell-2-4"></td>
+                    </tr>
+                    <tr>
+                        <th>Copan</th>
+                        <td><input type="checkbox" id="cell-3-0"></td>
+                        <td><input type="checkbox" id="cell-3-1"></td>
+                        <td><input type="checkbox" id="cell-3-2"></td>
+                        <td>-</td>
+                        <td><input type="checkbox" id="cell-3-4"></td>
+                    </tr>
+                    <tr>
+                        <th>Uxmal</th>
+                        <td><input type="checkbox" id="cell-4-0"></td>
+                        <td><input type="checkbox" id="cell-4-1"></td>
+                        <td><input type="checkbox" id="cell-4-2"></td>
+                        <td><input type="checkbox" id="cell-4-3"></td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="controls">
+                <label for="start-node">Where does Ixchel begin her journey? 🗺️</label>
+                <select id="start-node">
+                    <option value="0">Tikal</option>
+                    <option value="1">Palenque</option>
+                    <option value="2">Chichen Itza</option>
+                    <option value="3">Copan</option>
+                    <option value="4">Uxmal</option>
+                </select>
+                <label for="goal-node">Where is the crystal jaguar statue? 💎</label>
+                <select id="goal-node">
+                    <option value="0">Tikal</option>
+                    <option value="1">Palenque</option>
+                    <option value="2">Chichen Itza</option>
+                    <option value="3">Copan</option>
+                    <option value="4">Uxmal</option>
+                </select>
+                <button type="submit" class="start-button">Explore the Jungle!</button>
+            </div>
+        </form>
+        <script src="graph.js"></script>
+        <script>
+            document.getElementById('graph-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                saveMatrixFromForm(5);
+                localStorage.setItem('startNode', document.getElementById('start-node').value);
+                localStorage.setItem('goalNode', document.getElementById('goal-node').value);
+                window.location.href = 'visualization.html';
+            });
+
+            // Sync matrix checkboxes
+            const cells = document.querySelectorAll('input[type="checkbox"]');
+            cells.forEach(cell => {
+                cell.addEventListener('change', (e) => {
+                    const id = e.target.id;
+                    const [row, col] = id.replace('cell-', '').split('-').map(Number);
+                    const oppositeCell = document.getElementById(`cell-${col}-${row}`);
+                    if (oppositeCell) {
+                        oppositeCell.checked = e.target.checked;
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

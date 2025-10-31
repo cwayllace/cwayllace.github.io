@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>The Lost Map of the Maya Explorer</title>
+        <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Libre+Baskerville&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style1.css">
+    </head>
+    <body>
+        <h1>The Lost Map of the Maya Explorer</h1>
+        <p>Deep in the lush jungles of the Yucatán Peninsula, a young explorer named <b>Ixchel</b> (named after the Maya goddess of wisdom) discovers a fragment of an <b>ancient Maya map</b>. This map is not ordinary—it is a <b>network of secret paths</b> connecting long-forgotten cities, cenotes, and temples.</p>
+        <p>Legend says that a <b>crystal jaguar statue</b>, the symbol of power and knowledge, lies hidden at the end of one of these paths. But the paths are tricky—some loop back, some are dead ends, and only one leads to the statue.</p>
+        <p><b>Ixchel needs your help</b>. Using ancient Maya logic and your own reasoning, you must <b>explore the network carefully</b>. Will you be <b>cautious and methodical (like a Queue/BFS)</b> or <b>bold and curious (like a Stack/DFS)</b>?</p>
+        <p>To succeed, you must:</p>
+        <ol>
+            <li>Reconstruct the lost map (adjacency matrix)</li>
+            <li>Choose your exploration style.</li>
+            <li>Find the statue—or get lost forever in the jungle!</li>
+        </ol>
+
+        <h2 id="challenge-section">Challenge 1: The Crossroads of Ancient Cities</h2>
+        <div class="challenge-container">
+            <div class="challenge-text">
+                <p>Your first task is to navigate a small, but vital, part of the Maya network. Ixchel starts her journey in **Palenque** and believes the crystal jaguar statue is hidden in **Uxmal**. However, the paths are somewhat complex:</p>
+                <ul>
+                    <li>**Palenque** is connected to **Copan**, **Chichen Itza**, and **Tikal**.</li>
+                    <li>**Chichen Itza** is connected to **Copan**, **Tikal**, and **Palenque**.</li>
+                    <li>**Tikal** is connected to **Uxmal**, **Chichen Itza**, and **Palenque**.</li>
+                    <li>**Copan** is connected to **Chichen Itza**, **Palenque**, and **Uxmal**.</li>
+                    <li>**Uxmal** is only connected to **Tikal** and **Copan**.</li>
+                </ul>
+                <p>Help Ixchel find the statue! Which path will she take?</p>
+                <a href="challenge1.html"><button class="start-button">Start Challenge 1</button></a>
+            </div>
+            <div class="challenge-image">
+                <img src="map.png" alt="An ancient map of the Maya cities for Challenge 1">
+            </div>
+        </div>
+        
+        <p style="margin-top: 40px;">---</p>
+        <h2>Want to design your own map?</h2>
+        <p>If you want to create your very own network of cities and paths, click the button below!</p>
+        <a href="graph-input2.html"><button class="start-button">Create Your Own Map</button></a>
+    </body>
+</html>

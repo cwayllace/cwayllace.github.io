@@ -1,0 +1,73 @@
+<!-- graph-input.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Build the Maya Network</title>
+    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Libre+Baskerville&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Rebuild the Network of the Maya Cities</h1>
+    <p>Mark the paths between the cities. If there's a path from one city to another, check the box.</p>
+
+    <table>
+        <thead>
+            <tr class="label-row">
+                <th></th>
+                <th>Tikal</th>
+                <th>Copán</th>
+                <th>Uxmal</th>
+                <th>Chichén</th>
+                <th>Palenque</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Generate matrix input: 5x5 -->
+            <script>
+                const cities = ['Tikal', 'Copán', 'Uxmal', 'Chichén', 'Palenque'];
+                for (let i = 0; i < cities.length; i++) {
+                    document.write('<tr><th class="label-row">' + cities[i] + '</th>');
+                    for (let j = 0; j < cities.length; j++) {
+                        if (i === j) {
+                            document.write('<td style="background-color: #eee;"></td>');
+                        } else {
+                            document.write(`<td><input type="checkbox" id="cell-${i}-${j}"></td>`);
+                        }
+                    }
+                    document.write('</tr>');
+                }
+            </script>
+        </tbody>
+    </table>
+
+    <button class="submit-button" onclick="submitMatrix()">Continue</button>
+
+    <!-- <script>
+        function submitMatrix() {
+            const matrix = [];
+            for (let i = 0; i < 5; i++) {
+                matrix[i] = [];
+                for (let j = 0; j < 5; j++) {
+                    if (i === j) {
+                        matrix[i][j] = 0;
+                    } else {
+                        const cell = document.getElementById(`cell-${i}-${j}`);
+                        matrix[i][j] = cell.checked ? 1 : 0;
+                    }
+                }
+            }
+            console.log("Adjacency Matrix:", matrix);
+            alert("Matrix submitted! Check the console.");
+            // Later: pass matrix to algorithm visualizer
+        }
+    </script> -->
+    <script src="graph.js"></script>
+    <script>
+        function submitMatrix() {
+            saveMatrixFromForm(); // This stores the matrix in localStorage
+            window.location.href = "choose-style.html"; // Go to the next scene
+        }
+    </script>
+</body>
+</html>

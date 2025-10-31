@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Graph Visualizer</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        svg {
+            background: #fdf8e4;
+            border: 2px solid #c2b280;
+            margin: 20px auto;
+            display: block;
+        }
+        .node {
+            stroke: #5c3b1a;
+            stroke-width: 2px;
+            fill: #ffffff;
+        }
+        .node.visited {
+            fill: #c2b280;
+        }
+        .node.current {
+            fill: #d95f02;
+        }
+        .node.fringe {
+            fill: #1b9e77;
+        }
+        .link {
+            stroke: #8b7e66;
+            stroke-width: 2px;
+        }
+        .label {
+            font-family: sans-serif;
+            font-size: 12px;
+            text-anchor: middle;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center;">Ixchel’s Search Through the Network</h1>
+    <div style="text-align: center; margin-bottom: 1em;">
+        <label for="goal-select"><strong>Select Goal City:</strong></label>
+        <select id="goal-select">
+            <option value="0">Tikal</option>
+            <option value="1">Copán</option>
+            <option value="2">Uxmal</option>
+            <option value="3">Chichén</option>
+            <option value="4">Palenque</option>
+        </select>
+        <br><br>
+        <button onclick="runStep()">Run Step</button>
+        <button onclick="runFull()">Run Full</button>
+        <button onclick="restart()">Restart</button>
+        <button id="goToInput">Rebuild Graph</button>
+    </div>
+    
+    <svg id="graph" width="600" height="400">
+        <circle id="ixchel" r="10" fill="#ff69b4" visibility="hidden"></circle>
+    </svg>
+    <div id="fringe-container">
+        <h3>Fringe</h3>
+        <ul id="fringe-list"></ul>
+      </div>
+      
+    <script src="graph.js"></script>
+    <script>
+        document.getElementById("goToInput").addEventListener("click", () => {
+    window.location.href = "graph-input.html";
+});
+        // Mapping of node index to name
+        const cityNames = ['Tikal', 'Copán', 'Uxmal', 'Chichén', 'Palenque'];
+
+        // Example positions for 5 nodes
+        const positions = [
+            { x: 300, y: 50 },
+            { x: 100, y: 150 },
+            { x: 500, y: 150 },
+            { x: 200, y: 300 },
+            { x: 400, y: 300 },
+        ];
+
+        const matrix = loadMatrix();
+        
+
+        const svg = d3.select("svg");
+        const nodeRadius = 20;
+        const useQueue = window.location.href.includes("bfs"); // DFS by default
+
+        let startNode = 0;
+        let visited = [];
+        let fringe = [];
+        let path = [];
+        let current = null;
+        let running = false;
+        let interval = null;
+        let goal = parseInt(document.getElementById("goal-select").value);
+        let goalReached = false;
+
+
+        const links = [];
+        matrix.forEach((row, i) => {
+            row.forEach((val, j) => {
+                if (val === 1) links.push({ source: i, target: j });
+            });
+        });
+
+        // Draw links
+        svg.selectAll(".link")
+            .data(links)
+            .enter()
+            .append("line")
+            .attr("class", "link")
+            .attr("x1", d => positions[d.source].x)
+            .attr("y1", d => positions[d.source].y)
+            .attr("x2", d => positions[d.target].x)
+            .attr("y2", d => positions[d.target].y);
+
+        // Draw nodes
+        const nodeGroups = svg.selectAll(".node-group")
+            .data(positions)
+            .enter()
+            .append("g")
+            .attr("class", "node-group")
+            .attr("transform", (d, i) => `translate(${d.x}, ${d.y})`);
+
+        nodeGroups.append("circle")
+            .attr("r", nodeRadius)
+            .attr("class", "node");
+
+        nodeGroups.append("text")
+            .attr("class", "label")
+            .attr("dy", 5)
+            .text((d, i) => cityNames[i]);
+        
+        // function updateVisualization({ current, visited, fringe }) {
+        //     nodeGroups.select("circle")
+        //         .attr("class", (d, i) => {
+        //             if (i === current) return "node current";
+        //             else if (fringe.includes(i)) return "node fringe";
+        //             else if (visited.includes(i)) return "node visited";
+        //             else return "node";
+        //         });
+        // }
+
+        // Update visuals
+        function updateVisualization() { 
+            nodeGroups.select("circle")
+                .attr("class", (d, i) => {
+                    if (i === current) return "node current";
+                    else if (fringe.includes(i)) return "node fringe";
+                    else if (visited.includes(i)) return "node visited";
+                    else return "node";
+                });
+        }
+
+
+
+    function runStep() {
+    if (running || goalReached) return;
+
+    goal = parseInt(document.getElementById("goal-select").value);
+
+    // First step (root)
+    if (fringe.length === 0 && visited.length === 0) {
+        visited = [];
+        fringe = [startNode];  // start with root
+        path = [];
+        updateFringeDisplay();
+        updateVisualization();
+        return;
+    }
+
+    if (fringe.length === 0) {
+        current = null;
+        console.log("No path found.");
+        showWorriedIxchel();
+        updateFringeDisplay();
+        updateVisualization();
+        goalReached = true;
+        return;
+    }
+
+    console.log("Current fringe:", fringe.map(i => cityNames[i]));
+    updateFringeDisplay();
+
+    current = useQueue ? fringe.shift() : fringe.pop();
+    updateFringeDisplay();
+
+    if (!visited.includes(current)) {
+        visited.push(current);
+        path.push(current);
+
+        // Delay to let fringe show first
+        setTimeout(() => {
+            if (current === goal) {
+                goalReached = true;
+                updateVisualization();
+                updateFringeDisplay();
+                animateIxchel(path);
+                return;
+            }
+
+            for (let i = 0; i < matrix[current].length; i++) {
+                if (matrix[current][i] === 1 && !visited.includes(i) && !fringe.includes(i)) {
+                    fringe.push(i);
+                }
+            }
+
+            updateVisualization();
+            updateFringeDisplay();
+        }, 300);
+    } else {
+        updateVisualization();
+    }
+}
+
+ 
+
+
+    // Full run
+    function runFull() {
+        if (running) return;
+        running = true;
+        interval = setInterval(() => {
+            if (current === goal || fringe.length === 0) {
+                clearInterval(interval);
+                running = false;
+                if (current === goal) animateIxchel(path);
+                else showWorriedIxchel();
+                return;
+            }
+            runStep();
+        }, 800);
+    }
+
+    // Restart all state
+    function restart() {
+    clearInterval(interval);
+
+    visited = [];
+    fringe = [];
+    path = [];
+    current = null;
+    running = false;
+    goalReached = false;
+
+    startNode = 0; // or any default you want; or allow future selection
+    goal = parseInt(document.getElementById("goal-select").value);
+
+    // Reset node colors
+    nodeGroups.select("circle")
+        .attr("class", "node");
+
+    // Hide Ixchel
+    d3.select("#ixchel").attr("visibility", "hidden");
+
+    updateFringeDisplay();
+    updateVisualization();
+}
+
+
+
+    // Animate Ixchel walking the found path
+    function animateIxchel(path) {
+        const ixchel = d3.select("#ixchel");
+        ixchel.attr("visibility", "visible");
+
+        let i = 0;
+        function step() {
+            if (i >= path.length) return;
+            const pos = positions[path[i]];
+            ixchel
+                .transition()
+                .duration(600)
+                .attr("cx", pos.x)
+                .attr("cy", pos.y)
+                .on("end", () => {
+                    i++;
+                    step();
+                });
+        }
+        step();
+    }
+
+    // Show worried animation if path not found
+    function showWorriedIxchel() {
+        const ixchel = d3.select("#ixchel");
+        const pos = positions[0];
+        ixchel
+            .attr("cx", pos.x)
+            .attr("cy", pos.y)
+            .attr("visibility", "visible")
+            .transition()
+            .duration(150)
+            .attr("cx", pos.x - 10)
+            .transition()
+            .duration(150)
+            .attr("cx", pos.x + 10)
+            .transition()
+            .duration(150)
+            .attr("cx", pos.x);
+    }
+
+    function handleNodeClick(d) {
+    if (running) return;
+
+    if (d !== startNode) {
+        goalNode = d;
+        console.log("Goal node set to:", goalNode);
+        updateVisualization();
+    }
+}
+
+
+        // function visualTraversal({ matrix, startNode = 0, useQueue = false }) {
+        //     const visited = [];
+        //     const fringe = [startNode];
+
+        //     let interval = setInterval(() => {
+        //         if (fringe.length === 0) {
+        //             clearInterval(interval);
+        //             return;
+        //         }
+
+        //         const node = useQueue ? fringe.shift() : fringe.pop();
+
+        //         if (!visited.includes(node)) {
+        //             visited.push(node);
+
+        //             // Add unvisited neighbors to fringe
+        //             for (let i = 0; i < matrix[node].length; i++) {
+        //                 if (matrix[node][i] === 1 && !visited.includes(i) && !fringe.includes(i)) {
+        //                     if (useQueue) fringe.push(i);      // BFS
+        //                     else fringe.push(i);                // DFS
+        //                 }
+        //             }
+        //         }
+
+        //         updateVisualization({ current: node, visited, fringe });
+
+        //     }, 1000);
+        // }
+
+        // Change to true for BFS
+        const isBFS = window.location.href.includes("bfs");
+        // visualTraversal({ matrix, startNode, useQueue: isBFS });
+    </script>
+</body>
+</html>
